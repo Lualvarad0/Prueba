@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Buscador de Países</title>
+    <link rel="website icon" type="image/x-icon" href="/src/assets/images/country.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+</head>
+
+<body>
+    <app-nvar></app-nvar>
+    <div class="container">
+        <h1>Buscador de Países</h1>
+        <form (ngSubmit)="buscarPais(inputBuscar.value)">
+            <div class="form-group">
+                <label for="input-buscar">Buscar País</label>
+                <input type="text" class="form-control" id="input-buscar" placeholder="The research is carried in English." #inputBuscar>
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+        </form>
+
+        <hr>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Capital</th>
+                    <th>Región</th>
+                    <th>Subregión</th>
+                    <th>Moneda</th>
+                    <th>Idioma</th>
+                    <th>Favorito</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let pais of paises">
+                    <td>{{ pais.name }}</td>
+                    <td>{{ pais.capital }}</td>
+                    <td>{{ pais.region }}</td>
+                    <td>{{ pais.subregion }}</td>
+                    <td>{{ pais.currencies?.[0]?.name }} ({{ pais.currencies?.[0]?.symbol }})</td>
+                    <td>{{ pais.languages[0].name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" (click)="agregarFavorito(pais)" [disabled]="esFavorito(pais)">Agregar a Favoritos</button>
+                        <button type="button" class="btn btn-danger" (click)="eliminarFavorito(pais)" [disabled]="!esFavorito(pais)">Eliminar de Favoritos</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

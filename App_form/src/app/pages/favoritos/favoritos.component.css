@@ -1,0 +1,33 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-control {
+    width: 100%;
+    border-radius: 0;
+    border-color: #ccc;
+}
+
+.btn-primary {
+    background-color: #06c;
+    border-color: #06c;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #005cbf;
+    border-color: #005cbf;
+}
+
+.table {
+    margin-top: 20px;
+}
+
+.table thead th {
+    text-align: center;
+}
+
+.table td {
+    vertical-align: middle;
+}

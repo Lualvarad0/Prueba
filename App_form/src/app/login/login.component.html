@@ -1,0 +1,27 @@
+<div class="container">
+    <div class="card">
+        <div class="logo">
+            <img src="/src/assets/images/Login.png" alt="Login Buscador de Paises">
+        </div>
+        <form class="p-3 shadow-sm rounded bg-light" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+                <label for="username" class="form-label">Usuario:</label>
+                <input type="text" formControlName="username" id="username" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Contraseña:</label>
+                <input type="password" formControlName="password" id="password" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              {{ loading ? 'Cargando...' : 'Iniciar Sesión' }}
+            </button>
+        </form>
+        <div *ngIf="loginStatus === 'invalid'" class="alert alert-warning mt-3">
+            Usuario o contraseña incorrecta. Intente de nuevo.
+        </div>
+        <div *ngIf="loginStatus === 'success'" class="alert alert-success mt-3">
+
+        </div>
+    </div>
+</div>
