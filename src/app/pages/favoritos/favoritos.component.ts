@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Country } from '../../models/country.interface';
 
 @Component({
   selector: 'app-favoritos',
@@ -6,23 +7,43 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./favoritos.component.css']
 })
 export class FavoritosComponent implements OnInit {
-  favoritos: any[] = [];
+  favorites: Country[] = [];
 
-  constructor() { }
+  private regionClasses: Record<string, string> = {
+    Africa:    'region-africa',
+    Americas:  'region-americas',
+    Asia:      'region-asia',
+    Europe:    'region-europe',
+    Oceania:   'region-oceania',
+    Antarctic: 'region-antarctic'
+  };
 
   ngOnInit(): void {
-    // Obtener lista de favoritos del localStorage
-    const favoritosStr = localStorage.getItem('favoritos');
-    if (favoritosStr) {
-      this.favoritos = JSON.parse(favoritosStr);
-    } else {
-      this.favoritos = [];
-    }
+    const saved = localStorage.getItem('favoritos');
+    this.favorites = saved ? JSON.parse(saved) : [];
   }
 
-  eliminarFavorito(index: number) {
-    // Eliminar país favorito de la lista y actualizar localStorage
-    this.favoritos.splice(index, 1);
-    localStorage.setItem('favoritos', JSON.stringify(this.favoritos));
+  removeFavorite(country: Country): void {
+    this.favorites = this.favorites.filter(f => f.cca3 !== country.cca3);
+    localStorage.setItem('favoritos', JSON.stringify(this.favorites));
+  }
+
+  getCapital(country: Country): string {
+    return country.capital?.[0] ?? '—';
+  }
+
+  getCurrencyInfo(country: Country): string {
+    if (!country.currencies) return '—';
+    const first = Object.values(country.currencies)[0];
+    return `${first.name} (${first.symbol})`;
+  }
+
+  getLanguage(country: Country): string {
+    if (!country.languages) return '—';
+    return Object.values(country.languages)[0];
+  }
+
+  getRegionClass(region: string): string {
+    return this.regionClasses[region] || 'region-antarctic';
   }
 }

@@ -1,33 +1,168 @@
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+/* Cards grid */
+.fav-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1rem;
 }
 
-.form-control {
-    width: 100%;
-    border-radius: 0;
-    border-color: #ccc;
+@media (min-width: 640px)  { .fav-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 1024px) { .fav-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 1280px) { .fav-grid { grid-template-columns: repeat(4, 1fr); } }
+
+/* Country card */
+.fav-card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+  border: 1px solid #f1f5f9;
+  overflow: hidden;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-.btn-primary {
-    background-color: #06c;
-    border-color: #06c;
+.fav-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
 }
 
-.btn-primary:hover,
-.btn-primary:focus {
-    background-color: #005cbf;
-    border-color: #005cbf;
+/* Flag area */
+.fav-card-flag {
+  position: relative;
+  height: 128px;
+  overflow: hidden;
 }
 
-.table {
-    margin-top: 20px;
+.fav-card-flag img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+  display: block;
 }
 
-.table thead th {
-    text-align: center;
+.fav-card:hover .fav-card-flag img {
+  transform: scale(1.05);
 }
 
-.table td {
-    vertical-align: middle;
+.fav-card-flag-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 60%);
+}
+
+.fav-card-country-name {
+  position: absolute;
+  bottom: 10px;
+  left: 12px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.875rem;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.fav-card-remove {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: rgba(255,255,255,0.9);
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #475569;
+  opacity: 0;
+  transition: all 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+}
+
+.fav-card-remove svg {
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.fav-card:hover .fav-card-remove {
+  opacity: 1;
+}
+
+.fav-card-remove:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Card body */
+.fav-card-body {
+  padding: 1rem;
+}
+
+.fav-card-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.fav-card-code {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  font-family: ui-monospace, monospace;
+  font-weight: 500;
+}
+
+/* Info rows */
+.fav-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fav-info-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: #475569;
+}
+
+.fav-info-row svg {
+  width: 14px;
+  height: 14px;
+  color: #94a3b8;
+  flex-shrink: 0;
+}
+
+.fav-info-row span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Empty state */
+.fav-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  text-align: center;
+}
+
+.fav-empty-icon {
+  width: 80px;
+  height: 80px;
+  background: #fffbeb;
+  border-radius: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.fav-empty-icon svg {
+  width: 40px;
+  height: 40px;
+  color: #fbbf24;
 }

@@ -1,27 +1,136 @@
-<div class="container">
-    <div class="card">
-        <div class="logo">
-            <img src="/src/assets/images/Login.png" alt="Login Buscador de Paises">
-        </div>
-        <form class="p-3 shadow-sm rounded bg-light" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-            <div class="mb-3">
-                <label for="username" class="form-label">Usuario:</label>
-                <input type="text" formControlName="username" id="username" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Contraseña:</label>
-                <input type="password" formControlName="password" id="password" class="form-control" required>
-            </div>
-            <button type="submit" class="btn btn-primary" [disabled]="loading">
-              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-              {{ loading ? 'Cargando...' : 'Iniciar Sesión' }}
-            </button>
-        </form>
-        <div *ngIf="loginStatus === 'invalid'" class="alert alert-warning mt-3">
-            Usuario o contraseña incorrecta. Intente de nuevo.
-        </div>
-        <div *ngIf="loginStatus === 'success'" class="alert alert-success mt-3">
+<div class="login-root">
 
-        </div>
+  <!-- ===== LEFT PANEL (branding) ===== -->
+  <div class="login-brand">
+    <div class="login-brand-inner">
+
+      <div class="login-logo-wrap">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+        </svg>
+      </div>
+
+      <h1 class="login-brand-title">Countries App</h1>
+      <p class="login-brand-desc">
+        Explora datos detallados de más de 250 países del mundo: capitales, monedas, idiomas y mucho más.
+      </p>
+
+      <ul class="login-features">
+        <li>
+          <span class="feat-icon feat-blue">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </span>
+          <span>Buscador con filtros por región</span>
+        </li>
+        <li>
+          <span class="feat-icon feat-amber">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+            </svg>
+          </span>
+          <span>Lista personalizada de favoritos</span>
+        </li>
+        <li>
+          <span class="feat-icon feat-green">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+            </svg>
+          </span>
+          <span>Dashboard con estadísticas globales</span>
+        </li>
+      </ul>
+
     </div>
+  </div>
+
+  <!-- ===== RIGHT PANEL (form) ===== -->
+  <div class="login-form-side">
+    <div class="login-form-box">
+
+      <!-- Mobile logo -->
+      <div class="login-mobile-logo">
+        <div class="login-mobile-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3" />
+          </svg>
+        </div>
+        <span>Countries App</span>
+      </div>
+
+      <h2 class="form-title">Iniciar Sesión</h2>
+      <p class="form-subtitle">Ingresa tus credenciales para acceder al panel</p>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+
+        <!-- Username -->
+        <div class="field">
+          <label class="field-label" for="username">Usuario</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+              </svg>
+            </span>
+            <input
+              id="username"
+              type="text"
+              formControlName="username"
+              placeholder="Ingresa tu usuario"
+              autocomplete="username"
+              class="field-input"
+              [class.field-input--error]="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+          </div>
+          <p class="field-error-msg" *ngIf="loginForm.get('username')?.touched && loginForm.get('username')?.invalid">
+            El usuario es requerido
+          </p>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label class="field-label" for="password">Contraseña</label>
+          <div class="field-input-wrap">
+            <span class="field-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            </span>
+            <input
+              id="password"
+              type="password"
+              formControlName="password"
+              placeholder="Ingresa tu contraseña"
+              autocomplete="current-password"
+              class="field-input"
+              [class.field-input--error]="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+          </div>
+          <p class="field-error-msg" *ngIf="loginForm.get('password')?.touched && loginForm.get('password')?.invalid">
+            La contraseña es requerida
+          </p>
+        </div>
+
+        <!-- Alert -->
+        <div class="login-alert" *ngIf="loginError">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+          </svg>
+          Usuario o contraseña incorrectos. Intenta nuevamente.
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="submit-btn" [disabled]="loading || loginForm.invalid">
+          <span class="btn-spinner" *ngIf="loading"></span>
+          {{ loading ? 'Ingresando...' : 'Iniciar Sesión' }}
+        </button>
+
+      </form>
+
+      <p class="login-hint">
+        Demo: <code>admin</code> / <code>admin</code>
+      </p>
+
+    </div>
+  </div>
+
 </div>
