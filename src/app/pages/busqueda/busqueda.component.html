@@ -1,52 +1,162 @@
-<!DOCTYPE html>
-<html lang="en">
+<div class="page-wrapper">
 
-<head>
-    <meta charset="UTF-8">
-    <title>Buscador de Países</title>
-    <link rel="website icon" type="image/x-icon" href="/src/assets/images/country.png">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
-</head>
-
-<body>
-    <app-nvar></app-nvar>
-    <div class="container">
-        <h1>Buscador de Países</h1>
-        <form (ngSubmit)="buscarPais(inputBuscar.value)">
-            <div class="form-group">
-                <label for="input-buscar">Buscar País</label>
-                <input type="text" class="form-control" id="input-buscar" placeholder="The research is carried in English." #inputBuscar>
-            </div>
-            <button type="submit" class="btn btn-primary">Buscar</button>
-        </form>
-
-        <hr>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Capital</th>
-                    <th>Región</th>
-                    <th>Subregión</th>
-                    <th>Moneda</th>
-                    <th>Idioma</th>
-                    <th>Favorito</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let pais of paises">
-                    <td>{{ pais.name }}</td>
-                    <td>{{ pais.capital }}</td>
-                    <td>{{ pais.region }}</td>
-                    <td>{{ pais.subregion }}</td>
-                    <td>{{ pais.currencies?.[0]?.name }} ({{ pais.currencies?.[0]?.symbol }})</td>
-                    <td>{{ pais.languages[0].name }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" (click)="agregarFavorito(pais)" [disabled]="esFavorito(pais)">Agregar a Favoritos</button>
-                        <button type="button" class="btn btn-danger" (click)="eliminarFavorito(pais)" [disabled]="!esFavorito(pais)">Eliminar de Favoritos</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+  <!-- Header -->
+  <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;">
+    <div>
+      <h1 class="page-title">Buscador de Países</h1>
+      <p class="page-subtitle">Explora información detallada de los países del mundo</p>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <div *ngIf="!loading && !error"
+         style="flex-shrink:0;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:0.4rem 1rem;font-size:0.875rem;color:#64748b;font-weight:500;white-space:nowrap;">
+      <strong style="color:#0f172a;">{{ filteredCountries.length }}</strong> países
+    </div>
+  </div>
+
+  <!-- Search + Filters -->
+  <div class="card" style="margin-bottom:1.25rem;">
+    <div class="card-body" style="padding-bottom:1rem;">
+
+      <!-- Search bar -->
+      <div style="position:relative;margin-bottom:1rem;">
+        <svg style="position:absolute;left:14px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:#94a3b8;pointer-events:none;"
+             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+        </svg>
+        <input type="text" [(ngModel)]="searchTerm" (input)="search()"
+               placeholder="Buscar país en inglés..."
+               class="form-input has-icon"
+               style="padding-right:2.5rem;">
+        <button *ngIf="searchTerm"
+                (click)="clearSearch()"
+                style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e2e8f0;border:none;cursor:pointer;font-size:11px;font-weight:700;color:#64748b;">
+          ✕
+        </button>
+      </div>
+
+      <!-- Region chips -->
+      <div *ngIf="regions.length > 0" style="display:flex;flex-wrap:wrap;gap:8px;">
+        <button (click)="filterByRegion('')"
+                style="padding:6px 14px;border-radius:99px;font-size:0.75rem;font-weight:600;border:1.5px solid;cursor:pointer;transition:all 0.15s;"
+                [style.background]="!selectedRegion ? '#0f172a' : '#fff'"
+                [style.color]="!selectedRegion ? '#fff' : '#475569'"
+                [style.border-color]="!selectedRegion ? '#0f172a' : '#e2e8f0'">
+          Todos
+        </button>
+        <button *ngFor="let region of regions"
+                (click)="filterByRegion(region)"
+                style="padding:6px 14px;border-radius:99px;font-size:0.75rem;font-weight:600;border:1.5px solid;cursor:pointer;transition:all 0.15s;"
+                [style.background]="selectedRegion === region ? '#2563eb' : '#fff'"
+                [style.color]="selectedRegion === region ? '#fff' : '#475569'"
+                [style.border-color]="selectedRegion === region ? '#2563eb' : '#e2e8f0'">
+          {{ region }}
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading" style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6rem 0;gap:1rem;">
+    <div class="spinner spinner-blue" style="width:40px;height:40px;border-width:3px;"></div>
+    <p style="color:#64748b;font-size:0.875rem;">Cargando países...</p>
+  </div>
+
+  <!-- Error -->
+  <div *ngIf="error" class="card"
+       style="padding:1.25rem;display:flex;align-items:center;gap:0.75rem;color:#dc2626;background:#fef2f2;border-color:#fecaca;">
+    <svg style="width:20px;height:20px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+    </svg>
+    <span style="font-size:0.875rem;font-weight:500;">No se pudo conectar con la API de países. Verifica tu conexión e intenta recargar.</span>
+  </div>
+
+  <!-- Table -->
+  <ng-container *ngIf="!loading && !error">
+
+    <div class="card" style="overflow:hidden;margin-bottom:1rem;">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Bandera</th>
+              <th>País</th>
+              <th class="col-capital">Capital</th>
+              <th>Región</th>
+              <th class="col-currency">Moneda</th>
+              <th class="col-language">Idioma</th>
+              <th style="text-align:center;">Fav.</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let pais of pagedCountries">
+              <td>
+                <img [src]="pais.flags.png" [alt]="pais.flags.alt || pais.name.common">
+              </td>
+              <td>{{ pais.name.common }}</td>
+              <td class="col-capital">{{ getCapital(pais) }}</td>
+              <td>
+                <span class="region-pill" [ngClass]="getRegionClass(pais.region)">{{ pais.region }}</span>
+              </td>
+              <td class="col-currency" style="font-size:0.78rem;">{{ getCurrencyInfo(pais) }}</td>
+              <td class="col-language" style="font-size:0.78rem;">{{ getLanguage(pais) }}</td>
+              <td style="text-align:center;">
+                <button (click)="toggleFavorite(pais)"
+                        class="fav-btn"
+                        [class.active]="isFavorite(pais)"
+                        [title]="isFavorite(pais) ? 'Quitar de favoritos' : 'Agregar a favoritos'">
+                  {{ isFavorite(pais) ? '★' : '☆' }}
+                </button>
+              </td>
+            </tr>
+
+            <!-- Empty -->
+            <tr *ngIf="pagedCountries.length === 0">
+              <td colspan="7" style="text-align:center;padding:4rem 1rem;">
+                <div style="display:flex;flex-direction:column;align-items:center;gap:0.5rem;">
+                  <svg style="width:40px;height:40px;color:#cbd5e1;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                  </svg>
+                  <p style="font-size:0.875rem;color:#94a3b8;">Sin resultados para "<strong style="color:#475569;">{{ searchTerm }}</strong>"</p>
+                  <button (click)="clearSearch()" style="color:#2563eb;font-size:0.78rem;font-weight:600;background:none;border:none;cursor:pointer;text-decoration:underline;">Limpiar búsqueda</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div *ngIf="totalPages > 1"
+         style="display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+      <span style="font-size:0.78rem;color:#64748b;">
+        Página <strong>{{ currentPage }}</strong> de <strong>{{ totalPages }}</strong>
+        &nbsp;·&nbsp; {{ filteredCountries.length }} países
+      </span>
+      <div style="display:flex;align-items:center;gap:4px;">
+
+        <button (click)="goToPage(currentPage - 1)"
+                [disabled]="currentPage === 1"
+                class="page-btn">‹</button>
+
+        <ng-container *ngFor="let p of pages">
+          <button *ngIf="p !== -1"
+                  (click)="goToPage(p)"
+                  class="page-btn"
+                  [class.active]="p === currentPage">
+            {{ p }}
+          </button>
+          <span *ngIf="p === -1"
+                style="width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;color:#94a3b8;font-size:0.78rem;">…</span>
+        </ng-container>
+
+        <button (click)="goToPage(currentPage + 1)"
+                [disabled]="currentPage === totalPages"
+                class="page-btn">›</button>
+
+      </div>
+    </div>
+
+  </ng-container>
+
+</div>

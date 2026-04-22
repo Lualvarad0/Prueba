@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth.service';
 
@@ -9,39 +9,34 @@ import { AuthService } from '../auth.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
   loginForm!: FormGroup;
-  loginStatus: string = '';
-  loading: boolean = false;
+  loginError = false;
+  loading = false;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private fb: FormBuilder,
     private router: Router,
     private authService: AuthService
   ) {}
 
-  ngOnInit() {
-    this.loginForm = this.formBuilder.group({
-      username: new FormControl('', Validators.required),
-      password: new FormControl('', Validators.required)
+  ngOnInit(): void {
+    this.loginForm = this.fb.group({
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    if (this.loginForm.invalid) return;
     this.loading = true;
-    if (this.loginForm.valid && this.loginForm.value.username === 'admin'
-                              && this.loginForm.value.password === 'admin') {
-      this.loginStatus = 'success';
-      localStorage.setItem('isLoggedIn', 'true');
-      setTimeout(() => {
-        this.router.navigate(['/busqueda']);
-        this.loading = false;
-      }, 1000);
+    this.loginError = false;
+    const { username, password } = this.loginForm.value;
+    if (username === 'admin' && password === 'admin') {
+      this.authService.login();
+      setTimeout(() => this.router.navigate(['/dashboard']), 700);
     } else {
-      this.loginStatus = 'invalid';
+      this.loginError = true;
       this.loading = false;
     }
   }
-
 }
-

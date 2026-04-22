@@ -1,27 +1,77 @@
-# AppForm
+# Angular Countries App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.6.
+Aplicación web desarrollada con **Angular 14** que permite explorar información de todos los países del mundo, buscar por nombre, filtrar por región y gestionar una lista de favoritos personalizada.
 
-## Development server
+## Características
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- **Autenticación** — Login con guard de rutas (`canActivate`) para proteger páginas privadas
+- **Dashboard** — Estadísticas globales: total de países, favoritos, regiones y el país más poblado
+- **Buscador** — Filtro por nombre en tiempo real + chips de región con paginación (20 países por página)
+- **Favoritos** — Agrega o elimina países de tu lista personal, persistida en `localStorage`
+- **Banderas** — Muestra la bandera oficial de cada país
+- **Información completa** — Capital, región, subregión, moneda e idioma de cada país
+- **Layout con sidebar** — Navegación lateral responsive con topbar y menú mobile
+- **Diseño responsive** — Compatible con escritorio y dispositivos móviles
 
-## Code scaffolding
+## Stack tecnológico
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+| Tecnología | Versión |
+|---|---|
+| Angular | 14 |
+| Tailwind CSS | 3 |
+| TypeScript | 4.7 |
+| REST Countries API | v3.1 |
 
-## Build
+## Requisitos previos
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- **Node.js** 16 o superior
+- **Angular CLI** 14 (`npm install -g @angular/cli@14`)
 
-## Running unit tests
+## Instalación y ejecución
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```bash
+git clone git@github.com:Lualvarad0/Angular-countries.git
+cd Angular-countries
+npm install
+ng serve
+```
 
-## Running end-to-end tests
+La aplicación estará disponible en `http://localhost:4200`
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## Credenciales de acceso
 
-## Further help
+| Campo | Valor |
+|---|---|
+| Usuario | `admin` |
+| Contraseña | `admin` |
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Estructura del proyecto
+
+```
+src/
+├── app/
+│   ├── models/
+│   │   └── country.interface.ts       # Interfaz tipada del modelo País (API v3.1)
+│   ├── Services/
+│   │   └── country.service.ts         # Servicio HTTP — REST Countries API
+│   ├── layout/
+│   │   └── layout.component.*         # Shell con sidebar + topbar (rutas protegidas)
+│   ├── login/                         # Pantalla de autenticación
+│   ├── pages/
+│   │   ├── dashboard/                 # Estadísticas globales y acciones rápidas
+│   │   ├── busqueda/                  # Buscador con filtros y paginación
+│   │   └── favoritos/                 # Galería de países favoritos (grid de tarjetas)
+│   ├── auth.guard.ts                  # Guard canActivate para rutas protegidas
+│   └── auth.service.ts                # Servicio de autenticación con localStorage
+├── styles.css                         # Estilos globales + utilidades compartidas
+└── tailwind.config.js                 # Configuración de Tailwind CSS
+```
+
+## Rutas
+
+| Ruta | Componente | Protegida |
+|---|---|---|
+| `/login` | LoginComponent | No |
+| `/dashboard` | DashboardComponent | Sí |
+| `/busqueda` | BusquedaComponent | Sí |
+| `/favoritos` | FavoritosComponent | Sí |

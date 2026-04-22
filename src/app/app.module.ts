@@ -1,26 +1,24 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule, Routes } from '@angular/router';
-
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { LayoutComponent } from './layout/layout.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BusquedaComponent } from './pages/busqueda/busqueda.component';
 import { FavoritosComponent } from './pages/favoritos/favoritos.component';
-import { LoginComponent } from './login/login.component';
-import { AuthGuard } from './auth.guard';
-import { NvarComponent } from './pages/nvar/nvar.component';
-import { AuthService } from './auth.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
+    LayoutComponent,
+    DashboardComponent,
     BusquedaComponent,
-    FavoritosComponent,
-    NvarComponent
+    FavoritosComponent
   ],
   imports: [
     BrowserModule,
@@ -29,7 +27,6 @@ import { AuthService } from './auth.service';
     FormsModule,
     HttpClientModule
   ],
-  providers: [AuthService, AuthGuard],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

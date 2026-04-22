@@ -1,35 +1,22 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly KEY = 'loggedIn';
 
-  loggedIn = false;
-  router: any;
+  constructor(private router: Router) {}
 
-  login() {
-    this.loggedIn = true;
-    localStorage.setItem('loggedIn', 'true');
+  login(): void {
+    localStorage.setItem(this.KEY, 'true');
   }
 
-  logout() {
-    this.loggedIn = false;
-    localStorage.removeItem('loggedIn');
-  }
-
-  isLoggedIn() {
-    return this.loggedIn || localStorage.getItem('loggedIn') === 'true';
-  }
-
-  checkLogin(url: string): boolean {
-    if (this.isLoggedIn()) {
-      return true;
-    }
-
-    // Si el usuario no está autenticado, guardar la URL intentada y redirigirlo al login
-    localStorage.setItem('redirectUrl', url);
+  logout(): void {
+    localStorage.removeItem(this.KEY);
     this.router.navigate(['/login']);
-    return false;
+  }
+
+  isLoggedIn(): boolean {
+    return localStorage.getItem(this.KEY) === 'true';
   }
 }
