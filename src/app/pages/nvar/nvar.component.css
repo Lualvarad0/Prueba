@@ -1,0 +1,28 @@
+/* estilos para el navbar */
+
+.navbar {
+    background-color: #212529;
+    color: #fff;
+}
+
+
+/* estilos para el texto del navbar */
+
+.navbar-brand,
+.nav-link {
+    color: #fff;
+}
+
+
+/* estilos para el botón que despliega el menú en dispositivos móviles */
+
+.navbar-toggler-icon {
+    background-color: #17dbe1;
+}
+
+
+/* estilos para el botón de "Busqueda" en el menú */
+
+.nav-item.active .nav-link {
+    color: #bdff07;
+}
