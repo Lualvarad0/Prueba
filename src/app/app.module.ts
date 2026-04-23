@@ -10,6 +10,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BusquedaComponent } from './pages/busqueda/busqueda.component';
 import { FavoritosComponent } from './pages/favoritos/favoritos.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FavoritosComponent } from './pages/favoritos/favoritos.component';
     LayoutComponent,
     DashboardComponent,
     BusquedaComponent,
-    FavoritosComponent
+    FavoritosComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,

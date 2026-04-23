@@ -124,7 +124,9 @@ export class BusquedaComponent implements OnInit {
   getCurrencyInfo(country: Country): string {
     if (!country.currencies) return '—';
     const first = Object.values(country.currencies)[0];
-    return `${first.name} (${first.symbol})`;
+    if (!first) return '—';
+    const symbol = first.symbol ? ` (${first.symbol})` : '';
+    return `${first.name ?? '—'}${symbol}`;
   }
 
   getLanguage(country: Country): string {
@@ -139,5 +141,16 @@ export class BusquedaComponent implements OnInit {
   clearSearch(): void {
     this.searchTerm = '';
     this.search();
+  }
+
+  onFlagError(event: Event, svgUrl?: string): void {
+    const img = event.target as HTMLImageElement;
+    if (svgUrl && img.src !== svgUrl) {
+      img.src = svgUrl;
+    } else {
+      img.style.background = '#f1f5f9';
+      img.style.borderRadius = '3px';
+      img.removeAttribute('src');
+    }
   }
 }

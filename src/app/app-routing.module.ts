@@ -5,6 +5,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { BusquedaComponent } from './pages/busqueda/busqueda.component';
 import { FavoritosComponent } from './pages/favoritos/favoritos.component';
+import { PerfilComponent } from './pages/perfil/perfil.component';
 import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
@@ -18,6 +19,7 @@ const routes: Routes = [
       { path: 'dashboard',  component: DashboardComponent },
       { path: 'busqueda',   component: BusquedaComponent },
       { path: 'favoritos',  component: FavoritosComponent },
+      { path: 'perfil',     component: PerfilComponent },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
   },
