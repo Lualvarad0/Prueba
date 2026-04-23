@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://restcountries.com",
+    "secure": true,
+    "changeOrigin": true,
+    "pathRewrite": { "^/api": "" }
+  }
+}

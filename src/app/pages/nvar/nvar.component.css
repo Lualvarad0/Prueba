@@ -1,28 +1,110 @@
-/* estilos para el navbar */
-
 .navbar {
-    background-color: #212529;
-    color: #fff;
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%);
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+  padding: 0;
+  min-height: 60px;
 }
 
+.navbar-brand {
+  color: #fff;
+  font-weight: 800;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.9rem 0;
+  text-decoration: none;
+  letter-spacing: -0.01em;
+}
 
-/* estilos para el texto del navbar */
+.navbar-brand:hover { color: #93c5fd; }
 
-.navbar-brand,
+.brand-icon {
+  font-size: 1.3rem;
+}
+
+.nav-icon {
+  font-size: 0.9rem;
+}
+
 .nav-link {
-    color: #fff;
+  color: rgba(255, 255, 255, 0.65) !important;
+  font-weight: 500;
+  font-size: 0.9rem;
+  padding: 0.45rem 0.85rem !important;
+  border-radius: 7px;
+  transition: background 0.18s, color 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
+.nav-link:hover {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.1);
+}
 
-/* estilos para el botón que despliega el menú en dispositivos móviles */
+.nav-link.active {
+  color: #fff !important;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.user-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.4);
+}
+
+.user-name {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-logout {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 7px;
+  padding: 0.38rem 0.9rem;
+  font-size: 0.83rem;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s, color 0.18s;
+}
+
+.btn-logout:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+}
+
+.navbar-toggler {
+  border-color: rgba(255, 255, 255, 0.3);
+  padding: 0.4rem;
+}
 
 .navbar-toggler-icon {
-    background-color: #17dbe1;
-}
-
-
-/* estilos para el botón de "Busqueda" en el menú */
-
-.nav-item.active .nav-link {
-    color: #bdff07;
+  filter: invert(1);
 }

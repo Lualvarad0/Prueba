@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { AuthService } from '../../auth.service';
 
 @Component({
   selector: 'app-nvar',
   templateUrl: './nvar.component.html',
   styleUrls: ['./nvar.component.css']
 })
-export class NvarComponent implements OnInit {
+export class NvarComponent {
+  constructor(private authService: AuthService) {}
 
-  constructor() { }
-
-  ngOnInit(): void {
+  logout(): void {
+    this.authService.logout();
   }
-
 }

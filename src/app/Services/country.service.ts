@@ -6,7 +6,7 @@ import { Country } from '../models/country.interface';
 @Injectable({ providedIn: 'root' })
 export class CountryService {
   private readonly apiUrl =
-    'https://restcountries.com/v3.1/all?fields=name,capital,region,subregion,currencies,languages,flags,population,cca3';
+    '/api/v3.1/all?fields=name,capital,region,subregion,currencies,languages,flags,population,cca3';
 
   constructor(private http: HttpClient) {}
 
